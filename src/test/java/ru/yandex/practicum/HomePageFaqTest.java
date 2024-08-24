@@ -1,10 +1,12 @@
-package arseny.study;
+package ru.yandex.practicum;
 
-import org.junit.*;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import arseny.study.pages.HomePage;
+import ru.yandex.practicum.pages.HomePage;
 
 //
 
@@ -24,7 +26,7 @@ public class HomePageFaqTest {
     }
 
     @BeforeClass
-    public static void closeCookies() throws Exception {
+    public static void beforeTest() throws Exception {
         _homePage = new HomePage(driverRule.getDriver());
         _homePage.open();
         _homePage.acceptCookies();
@@ -49,7 +51,7 @@ public class HomePageFaqTest {
     }
 
     @Test
-    public void FaqTestInChrome() throws Exception {
+    public void faqTest() throws Exception {
         var homePage = new HomePage(driverRule.getDriver());
         homePage.testHomeFAQ_Item(_indexItem, _patternQuestion, _patternAnswer);
     }

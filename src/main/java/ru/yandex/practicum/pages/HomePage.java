@@ -1,9 +1,13 @@
-package arseny.study.pages;
+package ru.yandex.practicum.pages;
 
-import arseny.study.EnvConfig;
-import org.junit.ComparisonFailure;
+import ru.yandex.practicum.EnvConfig;
 import static org.junit.Assert.assertEquals;
-import org.openqa.selenium.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -42,7 +46,7 @@ public class HomePage extends PageBase {
     public void testHomeFAQ_Item(int index, String patternQuestion, String patternAnswer) throws InterruptedException {
 
         // Выводим в консоль заголовок информационного блока
-        System.out.printf("testHomeFAQ_Item. Индекс %d", index + 1);
+        System.out.printf("testHomeFAQ_Item. Индекс %d\n", index + 1);
 
         // Запрос на выборку элемента списка по заданнному индексу
         // Примечание. В XPath индексы отсчитываются с 1 (а не с 0)
@@ -60,9 +64,9 @@ public class HomePage extends PageBase {
 
             // Сверяем текст заголовка (вопроса) с шаблоном
             try {
-                assertEquals("Текст заголовка элемента не совпадает с образцом.", patternQuestion, actualQuestion);
-            } catch (ComparisonFailure err) {
-                System.out.println("\nОшибка: " + err.getMessage());
+                assertEquals(patternQuestion, actualQuestion);
+            } catch (AssertionError err) {
+                System.out.println("Ошибка: " + err.getMessage());
             }
 
             // 3. Кликаем по элементу
@@ -85,9 +89,9 @@ public class HomePage extends PageBase {
             }
 
             // Завершаем блок отчёта
-            System.out.println("\nЭлемент обработан.\n");
+            System.out.println("Элемент обработан.\n");
         } catch (NoSuchElementException errNoSuchElement) {
-            System.out.printf("\nОшибка! Элемент не найден!. Локатор: \"%s\" ", strQuery);
+            System.out.printf("Ошибка! Элемент не найден!. Локатор: \"%s\" ", strQuery);
         }
 
         // на пол секунды притормаживаем текущий поток (для наглядности)

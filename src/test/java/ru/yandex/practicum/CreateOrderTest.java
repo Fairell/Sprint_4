@@ -1,6 +1,6 @@
-package arseny.study;
+package ru.yandex.practicum;
 
-import arseny.study.pages.HomePage;
+import ru.yandex.practicum.pages.HomePage;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 
 @RunWith(Parameterized.class)
-public class FullScenarioTest  {
+public class CreateOrderTest {
     private final String _buttonKey;
     private final String _scopeClassPrefix;
     private final String _buttonClassPrefix;
@@ -74,7 +74,7 @@ public class FullScenarioTest  {
 
     //
 
-    public FullScenarioTest(String targetKey, String scopeClassPrefix, String buttonClassPrefix, HashMap<String, Object> orderFormParams) {
+    public CreateOrderTest(String targetKey, String scopeClassPrefix, String buttonClassPrefix, HashMap<String, Object> orderFormParams) {
         _buttonKey = targetKey;
         _scopeClassPrefix = scopeClassPrefix;
         _buttonClassPrefix = buttonClassPrefix;

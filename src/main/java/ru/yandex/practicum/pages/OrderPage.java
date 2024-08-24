@@ -1,14 +1,16 @@
-package arseny.study.pages;
+package ru.yandex.practicum.pages;
 
-import arseny.study.EnvConfig;
-import org.openqa.selenium.*;
+import ru.yandex.practicum.EnvConfig;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.TimeoutException;
 
 import java.time.Duration;
 import java.util.HashMap;
-
 
 public class OrderPage extends PageBase {
 
