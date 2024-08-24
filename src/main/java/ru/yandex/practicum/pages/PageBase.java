@@ -1,6 +1,10 @@
-package arseny.study.pages;
+package ru.yandex.practicum.pages;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -51,7 +55,7 @@ public abstract class PageBase {
 
     public boolean isOpenedEnsure () {
         WebDriverWait wait = new WebDriverWait(_driver, java.time.Duration.ofSeconds((3)));
-        ExpectedCondition<WebElement> condition = ExpectedConditions.presenceOfElementLocated(getCheckOpenedPageQuery());
+        ExpectedCondition<WebElement> condition = ExpectedConditions.visibilityOfElementLocated(getCheckOpenedPageQuery());
         try {
             wait.until(condition);
         } catch (TimeoutException errTimeout) {

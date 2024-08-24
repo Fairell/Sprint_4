@@ -1,12 +1,21 @@
-package arseny.study;
+package ru.yandex.practicum;
 
-import org.junit.*;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import arseny.study.pages.HomePage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.yandex.practicum.pages.HomePage;
 
-//
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(Parameterized.class)
 public class HomePageFaqTest {
@@ -24,7 +33,7 @@ public class HomePageFaqTest {
     }
 
     @BeforeClass
-    public static void closeCookies() throws Exception {
+    public static void beforeTest() throws Exception {
         _homePage = new HomePage(driverRule.getDriver());
         _homePage.open();
         _homePage.acceptCookies();
@@ -43,14 +52,46 @@ public class HomePageFaqTest {
                 { 4, "Можно ли продлить заказ или вернуть самокат раньше?", "Пока что нет! Но если что-то срочное — всегда можно позвонить в поддержку по красивому номеру 1010."},
                 { 5, "Вы привозите зарядку вместе с самокатом?", "Самокат приезжает к вам с полной зарядкой. Этого хватает на восемь суток — даже если будете кататься без передышек и во сне. Зарядка не понадобится."},
                 { 6, "Можно ли отменить заказ?", "Да, пока самокат не привезли. Штрафа не будет, объяснительной записки тоже не попросим. Все же свои."},
-                { 7, "Я живу за МКАДом, привезёте?", "Да, обязательно. Всем самокатов! И Москве, и Московской области."},
-                { 8, "Тестовый вопрос", "Тестовый ответ"}
+                { 7, "Я живу за МКАДом, привезёте?", "Да, обязательно. Всем самокатов! И Москве, и Московской области."}
         };
     }
 
     @Test
-    public void FaqTestInChrome() throws Exception {
-        var homePage = new HomePage(driverRule.getDriver());
-        homePage.testHomeFAQ_Item(_indexItem, _patternQuestion, _patternAnswer);
+    public void faqTest() throws Exception {
+        testHomeFAQ_Item(_indexItem, _patternQuestion, _patternAnswer);
     }
+
+    public void testHomeFAQ_Item(int index, String patternQuestion, String patternAnswer) throws InterruptedException {
+        WebDriver _driver = driverRule.getDriver();
+
+        // Запрос на выборку элемента списка по заданному индексу
+        String strQuery = String.format("//div[starts-with(@class,'Home_FAQ')]//div[@class='accordion__item'][%d]", index + 1);
+
+        WebElement elemTarget = driverRule.getDriver().findElement(By.xpath(strQuery));
+        assertNotNull("Элемент не найден по локатору: " + strQuery, elemTarget);
+
+        // 1. Скроллируем элемент в видимую область
+        ((JavascriptExecutor) _driver).executeScript("arguments[0].scrollIntoView();", elemTarget);
+
+        // 2. Получаем заголовок элемента
+        String actualQuestion = elemTarget.findElement(By.xpath("div[@role=\"heading\"]")).getText();
+
+        // Сверяем текст заголовка (вопроса) с шаблоном
+        assertEquals("Текст вопроса не совпадает с ожидаемым.", patternQuestion, actualQuestion);
+
+        // 3. Кликаем по элементу
+        elemTarget.click();
+
+        // 4. Пытаемся получить дочерний элемент содержащий ответ (путём ожидания видимости)
+        WebDriverWait wait = new WebDriverWait(_driver, java.time.Duration.ofSeconds(1));
+        WebElement resultElement = wait.until(ExpectedConditions.visibilityOf(elemTarget.findElement(By.xpath(".//div[@class=\"accordion__panel\"]"))));
+        String actualAnswer = resultElement.getText();
+
+        // Сверяем текст ответа с шаблоном
+        assertEquals("Текст ответа элемента не совпадает с образцом.", patternAnswer, actualAnswer);
+
+        // на пол секунды притормаживаем текущий поток (для наглядности)
+        Thread.sleep(500);
+    }
+
 }
