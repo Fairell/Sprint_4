@@ -1,4 +1,4 @@
-package arseny.study;
+package ru.yandex.practicum;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
